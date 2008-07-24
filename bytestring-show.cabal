@@ -25,7 +25,7 @@ Library
         Text.Show.ByteString.Integer
 
     Extensions:
-        MagicHash, BangPatterns
+        MagicHash, BangPatterns, TypeSynonymInstances
 
     GHC-Options:
         -O2 -Wall

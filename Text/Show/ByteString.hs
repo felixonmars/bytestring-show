@@ -1,10 +1,12 @@
+{-# LANGUAGE TypeSynonymInstances #-}
+
 -- ---------------------------------------------------------------------------
 -- |
 -- Module      : Text.Show.ByteString
 -- Copyright   : (c) 2008 Dan Doel
 -- Maintainer  : Dan Doel
 -- Stability   : Experimental
--- Portability : Portable
+-- Portability : Non-portable (type synonym instances)
 --
 -- Efficiently convert from values to lazy byte strings.
 
