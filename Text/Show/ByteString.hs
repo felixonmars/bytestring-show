@@ -46,6 +46,7 @@ import Text.Show.ByteString.Util ( putAscii , putUTF8
 
 import Text.Show.ByteString.Char
 import Text.Show.ByteString.Int
+import Text.Show.ByteString.Integer
 import Text.Show.ByteString.Float
 
 -- | Conversion of values to readable byte strings.
@@ -114,6 +115,9 @@ instance Show Word16 where
 
 instance Show Word32 where
   showp = showpWord32
+
+instance Show Integer where
+  showp = showpInteger
 
 instance Show Float where
   showp = showpGFloat Nothing
