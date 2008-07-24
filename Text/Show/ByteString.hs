@@ -36,6 +36,8 @@ import Data.ByteString.Lazy
 
 import Data.Int
 import Data.Word
+import Data.Ratio
+import Data.Complex
 
 import Text.Show.ByteString.Util ( putAscii , putUTF8
                                  , putAsciiStr, putUTF8Str
@@ -79,12 +81,15 @@ putDigit i
   | i > 9     = error $ "putDigit: Non-decimal digit: " ++ Prelude.show i
   | otherwise = unsafePutDigit i
 
+instance Show () where
+  showp () = putAscii '(' >> putAscii ')'
+
 instance Show Char where
   showp     = showpChar
   showpList = showpString
 
 instance (Show a) => Show [a] where
-  showp     = showpList
+  showp = showpList
 
 instance Show Int where
   showp = showpInt
@@ -115,3 +120,64 @@ instance Show Float where
 
 instance Show Double where
   showp = showpGFloat Nothing
+
+instance (Show a, Integral a) => Show (Ratio a) where
+  showp q = showp (numerator q) >>
+            putAscii ' ' >> putAscii '%' >> putAscii ' ' >>
+            showp (denominator q)
+
+instance (Show a, RealFloat a) => Show (Complex a) where
+  showp (a :+ b) = showp a >>
+                   putAscii ' ' >> putAscii ':' >> putAscii '+' >> putAscii ' ' >>
+                   showp b
+
+instance Show a => Show (Maybe a) where
+  showp Nothing  = putAsciiStr "Nothing"
+  showp (Just a) = putAsciiStr "Just " >> showp a
+
+instance (Show a, Show b) => Show (a,b) where
+  showp (a,b) = putAscii '(' >> showp a >> putAscii ',' >> showp b >> putAscii ')'
+
+instance (Show a, Show b, Show c) => Show (a,b,c) where
+  showp (a,b,c) = putAscii '(' >> showp a >>
+                  putAscii ',' >> showp b >>
+                  putAscii ',' >> showp c >>
+                  putAscii ')'
+
+instance (Show a, Show b, Show c, Show d) => Show (a,b,c,d) where
+  showp (a,b,c,d) =
+    putAscii '(' >> showp a >>
+    putAscii ',' >> showp b >>
+    putAscii ',' >> showp c >>
+    putAscii ',' >> showp d >>
+    putAscii ')'
+
+instance (Show a, Show b, Show c, Show d, Show e) => Show (a,b,c,d,e) where
+  showp (a,b,c,d,e) =
+    putAscii '(' >> showp a >>
+    putAscii ',' >> showp b >>
+    putAscii ',' >> showp c >>
+    putAscii ',' >> showp d >>
+    putAscii ',' >> showp e >>
+    putAscii ')'
+
+instance (Show a, Show b, Show c, Show d, Show e, Show f) => Show (a,b,c,d,e,f) where
+  showp (a,b,c,d,e,f) =
+    putAscii '(' >> showp a >>
+    putAscii ',' >> showp b >>
+    putAscii ',' >> showp c >>
+    putAscii ',' >> showp d >>
+    putAscii ',' >> showp e >>
+    putAscii ',' >> showp f >>
+    putAscii ')'
+
+instance (Show a, Show b, Show c, Show d, Show e, Show f, Show g) => Show (a,b,c,d,e,f,g) where
+  showp (a,b,c,d,e,f,g) =
+    putAscii '(' >> showp a >>
+    putAscii ',' >> showp b >>
+    putAscii ',' >> showp c >>
+    putAscii ',' >> showp d >>
+    putAscii ',' >> showp e >>
+    putAscii ',' >> showp f >>
+    putAscii ',' >> showp g >>
+    putAscii ')'
