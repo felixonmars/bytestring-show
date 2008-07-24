@@ -10,6 +10,7 @@
 
 module Text.Show.ByteString ( -- * The Show class
                               Show (..)
+                            , show
                               -- * Putting Chars
                             , putAscii
                             , putUTF8
@@ -23,12 +24,15 @@ module Text.Show.ByteString ( -- * The Show class
                             , showpGFloat
                             , showpFFloat
                             , showpEFloat
+                              -- * Printing values
+                            , print
                             ) where
 
-import Prelude hiding (Show(..))
+import Prelude hiding (Show(..), print, putStrLn)
 import qualified Prelude
 
-import Data.Binary
+import Data.Binary.Put
+import Data.ByteString.Lazy
 
 import Data.Int
 import Data.Word
@@ -59,6 +63,14 @@ class Show a where
    where
    go (y:ys) = putWord8 44 >> showp y >> go ys       -- ..,..
    go [    ] = putWord8 93                           -- ..]"
+
+-- | Encode a single value into a byte string
+show :: Show a => a -> ByteString
+show = runPut . showp
+
+-- | Print a value to the standard output
+print :: Show a => a -> IO ()
+print = putStrLn . show
 
 -- | Puts the digit corresponding to the Int passed in.
 putDigit :: Int -> Put
