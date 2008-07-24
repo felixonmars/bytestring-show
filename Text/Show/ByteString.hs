@@ -89,6 +89,10 @@ instance Show Char where
   showp     = showpChar
   showpList = showpString
 
+instance Show Bool where
+  showp True  = putAsciiStr "True"
+  showp False = putAsciiStr "False"
+
 instance (Show a) => Show [a] where
   showp = showpList
 
