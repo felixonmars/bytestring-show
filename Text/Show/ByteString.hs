@@ -126,9 +126,13 @@ instance Show Double where
   showp = showpGFloat Nothing
 
 instance (Show a, Integral a) => Show (Ratio a) where
-  showp q = showp (numerator q) >>
-            putAscii ' ' >> putAscii '%' >> putAscii ' ' >>
+  showp q = wrap (numerator q) >>
+            putAscii '%' >>
             showp (denominator q)
+   where
+   wrap n
+     | n < 0     = putAscii '(' >> showp n >> putAscii ')'
+     | otherwise = showp n
 
 instance (Show a, RealFloat a) => Show (Complex a) where
   showp (a :+ b) = showp a >>
