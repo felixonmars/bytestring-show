@@ -1,5 +1,5 @@
 
-module Tests.Properties where
+module Main where
 
 import Test.QuickCheck
 
@@ -32,3 +32,5 @@ test_all = do quickCheck (test_matchesShow :: Int -> Bool)
               quickCheck (test_matchesShow :: (Int,Int,Int) -> Bool)
               quickCheck (test_matchesShow :: (Int,Int,Int,Int) -> Bool)
               quickCheck (test_matchesShow :: [Int] -> Bool)
+
+main = test_all
