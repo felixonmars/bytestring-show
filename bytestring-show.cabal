@@ -22,6 +22,7 @@ Library
         Text.Show.ByteString.Char
         Text.Show.ByteString.Int
         Text.Show.ByteString.Float
+        Text.Show.ByteString.Integer
 
     Extensions:
         MagicHash
