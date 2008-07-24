@@ -20,6 +20,8 @@ Library
     Other-Modules:
         Text.Show.ByteString.Util
         Text.Show.ByteString.Char
+        Text.Show.ByteString.Int
+        Text.Show.ByteString.Float
 
     Extensions:
         MagicHash

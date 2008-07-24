@@ -19,6 +19,10 @@ module Text.Show.ByteString ( -- * The Show class
                               -- * Putting digits
                             , unsafePutDigit
                             , putDigit
+                              -- * Putting floats
+                            , showpGFloat
+                            , showpFFloat
+                            , showpEFloat
                             ) where
 
 import Prelude hiding (Show(..))
@@ -26,12 +30,17 @@ import qualified Prelude
 
 import Data.Binary
 
+import Data.Int
+import Data.Word
+
 import Text.Show.ByteString.Util ( putAscii , putUTF8
                                  , putAsciiStr, putUTF8Str
                                  , unsafePutDigit
                                  )
 
 import Text.Show.ByteString.Char
+import Text.Show.ByteString.Int
+import Text.Show.ByteString.Float
 
 -- | Conversion of values to readable byte strings.
 -- Minimal complete definition: 'showp'
@@ -64,3 +73,33 @@ instance Show Char where
 
 instance (Show a) => Show [a] where
   showp     = showpList
+
+instance Show Int where
+  showp = showpInt
+
+instance Show Int8 where
+  showp = showpInt8
+
+instance Show Int16 where
+  showp = showpInt16
+
+instance Show Int32 where
+  showp = showpInt32
+
+instance Show Word where
+  showp = showpWord
+
+instance Show Word8 where
+  showp = showpWord8
+
+instance Show Word16 where
+  showp = showpWord16
+
+instance Show Word32 where
+  showp = showpWord32
+
+instance Show Float where
+  showp = showpGFloat Nothing
+
+instance Show Double where
+  showp = showpGFloat Nothing
