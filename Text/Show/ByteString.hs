@@ -24,6 +24,9 @@ module Text.Show.ByteString ( -- * The Show class
                             , showpGFloat
                             , showpFFloat
                             , showpEFloat
+                              -- * Combining builders
+                            , unlinesP
+                            , unwordsP
                               -- * Printing values
                             , print
                             ) where
@@ -74,6 +77,17 @@ show = runPut . showp
 -- | Print a value to the standard output
 print :: Show a => a -> IO ()
 print = putStrLn . show
+
+-- | Merge several string builders, separating them by newlines
+unlinesP :: [Put] -> Put
+unlinesP [    ] = return ()
+unlinesP (p:ps) = p >> putAscii '\n' >> unlinesP ps
+
+-- | Merge several string builders, separating them by spaces
+unwordsP :: [Put] -> Put
+unwordsP [    ] = return ()
+unwordsP [p]    = p
+unwordsP (p:ps) = p >> putAscii ' ' >> unwordsP ps
 
 -- | Puts the digit corresponding to the Int passed in.
 putDigit :: Int -> Put
