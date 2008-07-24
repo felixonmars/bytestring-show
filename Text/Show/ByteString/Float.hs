@@ -57,7 +57,7 @@ putFormattedFloat fmt decs f
        [0]    -> putAsciiStr "0.0e0"
        [d]    -> unsafePutDigit d >> putAsciiStr ".0e" >> showpInt e
        (d:ds) -> unsafePutDigit d >> putAscii '.' >> mapM_ unsafePutDigit ds
-                                  >> putAscii 'e' >> showpInt e
+                                  >> putAscii 'e' >> showpInt (e-1)
      Just dec ->
        let dec' = max dec 1 in
        case is of
