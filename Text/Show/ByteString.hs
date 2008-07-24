@@ -82,6 +82,10 @@ putDigit i
   | i > 9     = error $ "putDigit: Non-decimal digit: " ++ Prelude.show i
   | otherwise = unsafePutDigit i
 
+-- This may be a bad idea, but I'm trying it out
+instance Show Put where
+  showp p = p
+
 instance Show () where
   showp () = putAscii '(' >> putAscii ')'
 
