@@ -9,6 +9,8 @@
 -- Portability : Non-portable (magic hash)
 --
 -- Putting integers and words.
+--
+-- The code in this module is based on the printing in the GHC modules.
 
 module Text.Show.ByteString.Int where
 
