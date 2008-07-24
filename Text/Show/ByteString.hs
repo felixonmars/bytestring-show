@@ -31,6 +31,8 @@ import Text.Show.ByteString.Util ( putAscii , putUTF8
                                  , unsafePutDigit
                                  )
 
+import Text.Show.ByteString.Char
+
 -- | Conversion of values to readable byte strings.
 -- Minimal complete definition: 'showp'
 class Show a where
@@ -55,3 +57,10 @@ putDigit i
   | i < 0     = error $ "putDigit: Negative integer: " ++ Prelude.show i
   | i > 9     = error $ "putDigit: Non-decimal digit: " ++ Prelude.show i
   | otherwise = unsafePutDigit i
+
+instance Show Char where
+  showp     = showpChar
+  showpList = showpString
+
+instance (Show a) => Show [a] where
+  showp     = showpList

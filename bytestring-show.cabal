@@ -19,6 +19,7 @@ Library
 
     Other-Modules:
         Text.Show.ByteString.Util
+        Text.Show.ByteString.Char
 
     Extensions:
         MagicHash
