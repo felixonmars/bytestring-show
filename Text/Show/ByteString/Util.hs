@@ -58,7 +58,7 @@ putUTF8Str = mapM_ putUTF8
 -- | Puts the decimal digit corresponding to the given Int without
 -- checking that it is in the interval [0,9]
 unsafePutDigit :: Int -> Put
-unsafePutDigit (I# i#) = unsafePutDigit# i#
+unsafePutDigit (I# i#) = unsafePutDigit# (int2Word# i#)
 
-unsafePutDigit# :: Int# -> Put
-unsafePutDigit# i# = putWord8 (W8# (int2Word# i# `plusWord#` int2Word# 48#))
+unsafePutDigit# :: Word# -> Put
+unsafePutDigit# w# = putWord8 (W8# (w# `plusWord#` int2Word# 48#))
