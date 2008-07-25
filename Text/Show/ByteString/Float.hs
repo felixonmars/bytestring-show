@@ -55,7 +55,7 @@ putFormattedFloat fmt decs f
      Nothing -> case is of
        []     -> error "putFormattedFloat"
        [0]    -> putAsciiStr "0.0e0"
-       [d]    -> unsafePutDigit d >> putAsciiStr ".0e" >> showpInt e
+       [d]    -> unsafePutDigit d >> putAsciiStr ".0e" >> showpInt (e-1)
        (d:ds) -> unsafePutDigit d >> putAscii '.' >> mapM_ unsafePutDigit ds
                                   >> putAscii 'e' >> showpInt (e-1)
      Just dec ->
