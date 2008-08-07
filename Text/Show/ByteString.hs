@@ -139,14 +139,22 @@ instance (Show a) => Show [a] where
 instance Show Int where
   showp = showpInt
 
+  showpPrec k i = showpParen (i < 0 && k > 0) $ showpInt i
+
 instance Show Int8 where
   showp = showpInt8
+
+  showpPrec k i = showpParen (i < 0 && k > 0) $ showpInt8 i
 
 instance Show Int16 where
   showp = showpInt16
 
+  showpPrec k i = showpParen (i < 0 && k > 0) $ showpInt16 i
+
 instance Show Int32 where
   showp = showpInt32
+
+  showpPrec k i = showpParen (i < 0 && k > 0) $ showpInt32 i
 
 instance Show Word where
   showp = showpWord
@@ -163,25 +171,26 @@ instance Show Word32 where
 instance Show Integer where
   showp = showpInteger
 
+  showpPrec k i = showpParen (i < 0 && k > 0) $ showpInteger i
+
 instance Show Float where
   showp = showpGFloat Nothing
+
+  showpPrec k f = showpParen (f < 0 && k > 0) $ showpGFloat Nothing f
 
 instance Show Double where
   showp = showpGFloat Nothing
 
+  showpPrec k f = showpParen (f < 0 && k > 0) $ showpGFloat Nothing f
+
 instance (Show a, Integral a) => Show (Ratio a) where
-  showp q = wrap (numerator q) >>
-            putAscii '%' >>
-            showp (denominator q)
-   where
-   wrap n
-     | n < 0     = putAscii '(' >> showp n >> putAscii ')'
-     | otherwise = showp n
+  showpPrec k q = showpParen (k > 7) $ showpPrec 8 (numerator q) >>
+                  putAscii '%' >> showp (denominator q)
 
 instance (Show a, RealFloat a) => Show (Complex a) where
-  showpPrec k (a :+ b) = showpParen (k > 6) $ showp a >>
+  showpPrec k (a :+ b) = showpParen (k > 6) $ showpPrec 7 a >>
                          putAscii ' ' >> putAscii ':' >> putAscii '+' >> putAscii ' ' >>
-                         showp b
+                         showpPrec 7 b
 
 instance Show a => Show (Maybe a) where
   showpPrec _ Nothing  = putAsciiStr "Nothing"
