@@ -89,6 +89,12 @@ class Show a where
 show :: Show a => a -> ByteString
 show = runPut . showp
 
+-- | A utility function for surrounding output by parentheses
+-- conditionally.
+showpParen :: Bool -> Put -> Put
+showpParen b p | b         = putAscii '(' >> p >> putAscii ')'
+               | otherwise = p
+
 -- | Print a value to the standard output
 print :: Show a => a -> IO ()
 print = putStrLn . show
