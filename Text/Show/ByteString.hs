@@ -55,8 +55,17 @@ import Text.Show.ByteString.Integer
 import Text.Show.ByteString.Float
 
 -- | Conversion of values to readable byte strings.
--- Minimal complete definition: 'showp'
+-- Minimal complete definition: 'showp' or 'showpPrec'
 class Show a where
+  -- | Encodes a value to an efficient byte string builder.
+  -- The precedence is used to determine where to put
+  -- parentheses in a shown expression involving operators.
+  --
+  -- Values of type Put can be efficiently combined, so the
+  -- showp functions are available for showing multiple values
+  -- before producing an output byte string.
+  showpPrec :: Int -> a -> Put
+
   -- | Encodes a value to an efficient byte string builder.
   -- Values of type Put can be efficiently combined, so this
   -- is available for building strings from multiple values.
@@ -65,6 +74,10 @@ class Show a where
   -- | Allows for specialized display of lists of values.
   -- This is used, for example, when showing arrays of Chars.
   showpList :: [a] -> Put
+
+  showpPrec _ = showp
+
+  showp = showpPrec 0
 
   showpList [] = putWord8 91 >> putWord8 93          -- "[]"
   showpList (x:xs) = putWord8 91 >> showp x >> go xs -- "[..
