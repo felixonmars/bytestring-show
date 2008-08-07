@@ -184,8 +184,8 @@ instance (Show a, RealFloat a) => Show (Complex a) where
                    showp b
 
 instance Show a => Show (Maybe a) where
-  showp Nothing  = putAsciiStr "Nothing"
-  showp (Just a) = putAsciiStr "Just " >> showp a
+  showpPrec _ Nothing  = putAsciiStr "Nothing"
+  showpPrec k (Just a) = showpParen (k > 10) $ putAsciiStr "Just " >> showpPrec 11 a
 
 instance (Show a, Show b) => Show (a,b) where
   showp (a,b) = putAscii '(' >> showp a >> putAscii ',' >> showp b >> putAscii ')'
