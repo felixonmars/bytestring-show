@@ -29,6 +29,7 @@ module Text.Show.ByteString ( -- * The Show class
                               -- * Combining builders
                             , unlinesP
                             , unwordsP
+                            , showpParen
                               -- * Printing values
                             , print
                             ) where
