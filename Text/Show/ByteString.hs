@@ -179,9 +179,9 @@ instance (Show a, Integral a) => Show (Ratio a) where
      | otherwise = showp n
 
 instance (Show a, RealFloat a) => Show (Complex a) where
-  showp (a :+ b) = showp a >>
-                   putAscii ' ' >> putAscii ':' >> putAscii '+' >> putAscii ' ' >>
-                   showp b
+  showpPrec k (a :+ b) = showpParen (k > 6) $ showp a >>
+                         putAscii ' ' >> putAscii ':' >> putAscii '+' >> putAscii ' ' >>
+                         showp b
 
 instance Show a => Show (Maybe a) where
   showpPrec _ Nothing  = putAsciiStr "Nothing"
