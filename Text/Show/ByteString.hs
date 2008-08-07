@@ -196,6 +196,10 @@ instance Show a => Show (Maybe a) where
   showpPrec _ Nothing  = putAsciiStr "Nothing"
   showpPrec k (Just a) = showpParen (k > 10) $ putAsciiStr "Just " >> showpPrec 11 a
 
+instance (Show a, Show b) => Show (Either a b) where
+  showpPrec k (Left a)  = showpParen (k > 10) $ putAsciiStr "Left " >> showpPrec 11 a
+  showpPrec k (Right b) = showpParen (k > 10) $ putAsciiStr "Right " >> showpPrec 11 b
+
 instance (Show a, Show b) => Show (a,b) where
   showp (a,b) = putAscii '(' >> showp a >> putAscii ',' >> showp b >> putAscii ')'
 
