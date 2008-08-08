@@ -47,6 +47,9 @@ import Data.Complex
 
 import Data.Array
 
+import qualified Data.Map as M
+import qualified Data.Set as S
+
 import Text.Show.ByteString.Util ( putAscii , putUTF8
                                  , putAsciiStr, putUTF8Str
                                  , unsafePutDigit
@@ -257,3 +260,12 @@ instance (Show a, Show b, Show c, Show d, Show e, Show f, Show g) => Show (a,b,c
 instance (Show i, Show e, Ix i) => Show (Array i e) where
   showpPrec k a = showpParen (k > 10) $ putAsciiStr "array " >>
                   showp (bounds a) >> putAscii ' ' >> showp (assocs a)
+
+instance (Show k, Show v) => Show (M.Map k v) where
+  showpPrec k m = showpParen (k > 10) $ putAsciiStr "fromList " >>
+                  showp (M.toList m)
+
+instance (Show e) => Show (S.Set e) where
+  showpPrec k s = showpParen (k > 10) $ putAsciiStr "fromList " >>
+                  showp (S.toList s)
+
