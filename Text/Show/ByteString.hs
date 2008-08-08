@@ -200,6 +200,11 @@ instance (Show a, Show b) => Show (Either a b) where
   showpPrec k (Left a)  = showpParen (k > 10) $ putAsciiStr "Left " >> showpPrec 11 a
   showpPrec k (Right b) = showpParen (k > 10) $ putAsciiStr "Right " >> showpPrec 11 b
 
+instance Show Ordering where
+  showp LT = putAscii 'L' >> putAscii 'T'
+  showp EQ = putAscii 'E' >> putAscii 'Q'
+  showp GT = putAscii 'G' >> putAscii 'T'
+
 instance (Show a, Show b) => Show (a,b) where
   showp (a,b) = putAscii '(' >> showp a >> putAscii ',' >> showp b >> putAscii ')'
 
