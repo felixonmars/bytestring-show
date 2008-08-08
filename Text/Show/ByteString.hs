@@ -45,6 +45,8 @@ import Data.Word
 import Data.Ratio
 import Data.Complex
 
+import Data.Array
+
 import Text.Show.ByteString.Util ( putAscii , putUTF8
                                  , putAsciiStr, putUTF8Str
                                  , unsafePutDigit
@@ -251,3 +253,7 @@ instance (Show a, Show b, Show c, Show d, Show e, Show f, Show g) => Show (a,b,c
     putAscii ',' >> showp f >>
     putAscii ',' >> showp g >>
     putAscii ')'
+
+instance (Show i, Show e, Ix i) => Show (Array i e) where
+  showpPrec k a = showpParen (k > 10) $ putAsciiStr "array " >>
+                  showp (bounds a) >> putAscii ' ' >> showp (assocs a)
