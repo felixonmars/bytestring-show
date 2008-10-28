@@ -1,4 +1,4 @@
-{-# LANGUAGE MagicHash, BangPatterns #-}
+{-# LANGUAGE MagicHash, BangPatterns, CPP #-}
 
 -- ---------------------------------------------------------------------------
 -- |
@@ -15,7 +15,12 @@
 module Text.Show.ByteString.Integer where
 
 import GHC.Base
+
+#ifdef INTEGER_GMP
+import GHC.Integer.Internals
+#else
 import GHC.Num
+#endif
 
 import Data.Binary.Put
 
