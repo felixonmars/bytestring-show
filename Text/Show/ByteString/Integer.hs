@@ -66,7 +66,7 @@ splitb :: Integer -> [Integer] -> [Integer]
 splitb _ [    ] = []
 splitb p (n:ns) = case n `quotRemInteger` p of
 #ifdef INTEGER_GMP
-  (# q, r #)
+  (# q, r #) ->
 #else
   (q, r) ->
 #endif
