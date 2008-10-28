@@ -31,5 +31,5 @@ library
         -O2 -Wall
 
     if impl(ghc >= 6.9)
-        build-depends: integer-gmp
+        build-depends: integer
         cpp-options: -DINTEGER_GMP
