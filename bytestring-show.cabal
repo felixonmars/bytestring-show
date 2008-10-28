@@ -25,7 +25,7 @@ library
         Text.Show.ByteString.Integer
 
     extensions:
-        MagicHash, BangPatterns, TypeSynonymInstances, CPP
+        UnboxedTuples, MagicHash, BangPatterns, TypeSynonymInstances, CPP
 
     ghc-options:
         -O2 -Wall

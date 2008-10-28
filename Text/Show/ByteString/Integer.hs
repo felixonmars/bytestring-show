@@ -1,4 +1,4 @@
-{-# LANGUAGE MagicHash, BangPatterns, CPP #-}
+{-# LANGUAGE UnboxedTuples, MagicHash, BangPatterns, CPP #-}
 
 -- ---------------------------------------------------------------------------
 -- |
