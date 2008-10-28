@@ -12,7 +12,7 @@ build-type:        Simple
 cabal-version:     >= 1.2
 
 library
-    build-bepends: base, binary, bytestring >= 0.9, array, containers
+    build-depends: base, binary, bytestring >= 0.9, array, containers
 
     exposed-modules:
         Text.Show.ByteString
