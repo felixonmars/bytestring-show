@@ -18,9 +18,10 @@ import GHC.Base
 
 #ifdef INTEGER_GMP
 import GHC.Integer.Internals
-#else
-import GHC.Num
 #endif
+
+import GHC.Num
+
 
 import Data.Binary.Put
 
