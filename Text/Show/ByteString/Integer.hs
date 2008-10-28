@@ -53,19 +53,34 @@ splitf p n
 splith :: Integer -> [Integer] -> [Integer]
 splith _ [    ] = error "splith: the impossible happened."
 splith p (n:ns) = case n `quotRemInteger` p of
-  (q, r) -> if q > 0
+#ifdef INTEGER_GMP
+  (# q, r #) ->
+#else
+  (q, r) -> 
+#endif
+          if q > 0
             then q : r : splitb p ns
             else r : splitb p ns
 
 splitb :: Integer -> [Integer] -> [Integer]
 splitb _ [    ] = []
 splitb p (n:ns) = case n `quotRemInteger` p of
-  (q, r) -> q : r : splitb p ns
+#ifdef INTEGER_GMP
+  (# q, r #)
+#else
+  (q, r) ->
+#endif
+            q : r : splitb p ns
 
 printh :: [Integer] -> Put
 printh [    ] = error "printh: the impossible happened."
 printh (n:ns) = case n `quotRemInteger` mx of
-  (q', r') -> let q = fromInteger q'
+#ifdef INTEGER_GMP
+  (# q', r' #) ->
+#else
+  (q', r') ->
+#endif
+              let q = fromInteger q'
                   r = fromInteger r'
               in if q > 0 then phead q >> pblock r >> printb ns
                           else phead r >> printb ns
@@ -73,7 +88,12 @@ printh (n:ns) = case n `quotRemInteger` mx of
 printb :: [Integer] -> Put
 printb [    ] = return ()
 printb (n:ns) = case n `quotRemInteger` mx of
-  (q', r') -> let q = fromInteger q'
+#ifdef INTEGER_GMP
+  (# q', r' #) ->
+#else
+  (q', r') ->
+#endif
+              let q = fromInteger q'
                   r = fromInteger r'
               in pblock q >> pblock r >> printb ns
 
