@@ -161,6 +161,11 @@ instance Show Int32 where
 
   showpPrec k i = showpParen (i < 0 && k > 0) $ showpInt32 i
 
+instance Show Int64 where
+  showp = showpInt64
+
+  showpPrec k i = showpParen (i < 0 && k > 0) $ showpInt64 i
+
 instance Show Word where
   showp = showpWord
 
@@ -172,6 +177,9 @@ instance Show Word16 where
 
 instance Show Word32 where
   showp = showpWord32
+
+instance Show Word64 where
+  showp = showpWord64
 
 instance Show Integer where
   showp = showpInteger

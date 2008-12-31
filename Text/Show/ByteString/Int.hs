@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -funbox-strict-fields -cpp #-}
 {-# LANGUAGE MagicHash #-}
 
 -- ---------------------------------------------------------------------------
@@ -11,6 +12,8 @@
 -- Putting integers and words.
 --
 -- The code in this module is based on the printing in the GHC modules.
+
+#include "MachDeps.h"
 
 module Text.Show.ByteString.Int where
 
@@ -49,6 +52,22 @@ showpInt16 (I16# i#) = putI i#
 showpInt32 :: Int32 -> Put
 showpInt32 (I32# i#) = putI i#
 
+showpInt64 :: Int64 -> Put
+#if WORD_SIZE_IN_BITS >= 64
+showpInt64 (I64# i#) = putI i#
+#else /* WORD_SIZE_IN_BITS < 64 */
+showpInt64 = putI64
+
+-- Unboxed 64-bit-specific operations aren't exported
+
+putI64 :: Int64 -> Put
+putI64 i | i == minBound = putWord8 45 
+                           >> putW64 (fromIntegral $ negate (i `quot` 10)) 
+                           >> putW64 (fromIntegral $ negate (i `rem` 10))
+         | i < 0         = putWord8 45 >> putW64 (fromIntegral $ negate i)
+         | otherwise     = putW64 (fromIntegral i)
+#endif
+
 showpWord :: Word -> Put
 showpWord (W# w#) = putW w#
 
@@ -60,3 +79,17 @@ showpWord16 (W16# w#) = putW w#
 
 showpWord32 :: Word32 -> Put
 showpWord32 (W32# w#) = putW w#
+
+showpWord64 :: Word64 -> Put
+#if WORD_SIZE_IN_BITS >= 64
+showpWord64 (W64# w#) = putW w#
+#else /* WORD_SIZE_IN_BITS < 64 */
+showpWord64 = putW64
+
+putW64 :: Word64 -> Put
+putW64 w | w < 10    = unsafePutDigit64 w
+         | otherwise = putW64 (w `quot` 10) 
+                       >> unsafePutDigit64 (w `rem` 10)
+    where unsafePutDigit64 w = unsafePutDigit# (case fromIntegral w of (W# w#) -> w#)
+
+#endif
