@@ -32,6 +32,10 @@ module Text.Show.ByteString ( -- * The Show class
                             , showpParen
                               -- * Printing values
                             , print
+                              -- * Put
+                            , Put
+                            , PutM(..)
+                            , runPut
                             ) where
 
 import Prelude hiding (Show(..), print, putStrLn)
