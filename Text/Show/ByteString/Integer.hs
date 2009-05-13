@@ -108,3 +108,15 @@ pblock' d !n
   | d == 1    = unsafePutDigit n
   | otherwise = pblock' (d-1) q >> unsafePutDigit r
  where (q, r) = n `quotRemInt` 10
+
+-- | Shows an Integral number using the base specified by the first
+-- argument and the chracter representation specified by the second.
+showpIntAtBase :: Integral a => a -> (Int -> Char) -> a -> Put
+showpIntAtBase b f n | n < 0     = putAscii '-' >> showpIntAtBase b f (-n)
+                     | n == 0    = putAscii (f 0)
+                     | otherwise = let
+  go n | n == 0    = return ()
+       | otherwise = go d >> putAscii (f $ fromIntegral m)
+   where
+   (d, m) = n `divMod` b
+  in go n

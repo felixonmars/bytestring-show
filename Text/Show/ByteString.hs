@@ -22,6 +22,8 @@ module Text.Show.ByteString ( -- * The Show class
                               -- * Putting digits
                             , unsafePutDigit
                             , putDigit
+                              -- * Putting integers
+                            , showpIntAtBase
                               -- * Putting floats
                             , showpGFloat
                             , showpFFloat
