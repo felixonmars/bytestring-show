@@ -16,8 +16,11 @@ module Text.Show.ByteString.Integer where
 
 import GHC.Base
 
-#ifdef INTEGER_GMP
+
+#if  __GLASGOW_HASKELL__ && __GLASGOW_HASKELL__ < 611
 import GHC.Integer.Internals
+#elif __GLASGOW_HASKELL__ && __GLASGOW_HASKELL__ >= 611
+import GHC.Integer.GMP.Internals
 #endif
 
 import GHC.Num

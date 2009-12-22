@@ -30,6 +30,10 @@ library
     ghc-options:
         -O2 -Wall
 
-    if impl(ghc >= 6.9)
-        build-depends: integer
+    if impl(ghc >= 6.11)
         cpp-options: -DINTEGER_GMP
+        build-depends: integer-gmp
+
+    if impl(ghc >= 6.9) && impl(ghc < 6.11)
+        cpp-options: -DINTEGER_GMP
+        build-depends: integer
