@@ -27,7 +27,11 @@ import Text.Show.ByteString.Util
 
 putI :: Int# -> Put
 putI i#
+#if __GLASGOW_HASKELL__ && __GLASGOW_HASKELL__ >= 611
+  | i# <# 0#  = let !(I# minInt#) = minInt
+#else
   | i# <# 0#  = let I# minInt# = minInt
+#endif
                 in if i# ==# minInt#
                    then putWord8 45 >> putW (int2Word# (negateInt# (i# `quotInt#` 10#)))
                                     >> putW (int2Word# (negateInt# (i# `remInt#` 10#)))
