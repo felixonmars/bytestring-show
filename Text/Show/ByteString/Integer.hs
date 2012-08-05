@@ -16,11 +16,12 @@ module Text.Show.ByteString.Integer where
 
 import GHC.Base
 
-
-#if  __GLASGOW_HASKELL__ && __GLASGOW_HASKELL__ < 611
+#if   __GLASGOW_HASKELL__ && __GLASGOW_HASKELL__ <  611 && INTEGER_GMP
 import GHC.Integer.Internals
-#elif __GLASGOW_HASKELL__ && __GLASGOW_HASKELL__ >= 611
+#elif __GLASGOW_HASKELL__ && __GLASGOW_HASKELL__ >= 611 && INTEGER_GMP
 import GHC.Integer.GMP.Internals
+#elif __GLASGOW_HASKELL__ && INTEGER_SIMPLE
+import GHC.Integer.Simple.Internals
 #endif
 
 import GHC.Num
@@ -37,7 +38,12 @@ ds :: Int
  where mi = fromIntegral (maxBound :: Int)
 
 showpInteger :: Integer -> Put
+#ifdef INTEGER_SIMPLE
+#elif INTEGER_GMP
 showpInteger (S# i#) = putI i#
+#else
+showpInteger (I# i#) = putI i#
+#endif
 showpInteger n
   | n < 0     = putAscii '-' >> posIntegerPut (-n)
   | otherwise = posIntegerPut n
@@ -56,7 +62,7 @@ splitf p n
 splith :: Integer -> [Integer] -> [Integer]
 splith _ [    ] = error "splith: the impossible happened."
 splith p (n:ns) = case n `quotRemInteger` p of
-#ifdef INTEGER_GMP
+#if defined(INTEGER_GMP) || defined(INTEGER_SIMPLE)
   (# q, r #) ->
 #else
   (q, r) -> 
@@ -68,7 +74,7 @@ splith p (n:ns) = case n `quotRemInteger` p of
 splitb :: Integer -> [Integer] -> [Integer]
 splitb _ [    ] = []
 splitb p (n:ns) = case n `quotRemInteger` p of
-#ifdef INTEGER_GMP
+#if defined(INTEGER_GMP) || defined(INTEGER_SIMPLE)
   (# q, r #) ->
 #else
   (q, r) ->
@@ -78,7 +84,7 @@ splitb p (n:ns) = case n `quotRemInteger` p of
 printh :: [Integer] -> Put
 printh [    ] = error "printh: the impossible happened."
 printh (n:ns) = case n `quotRemInteger` mx of
-#ifdef INTEGER_GMP
+#if defined(INTEGER_GMP) || defined(INTEGER_SIMPLE)
   (# q', r' #) ->
 #else
   (q', r') ->
@@ -91,7 +97,7 @@ printh (n:ns) = case n `quotRemInteger` mx of
 printb :: [Integer] -> Put
 printb [    ] = return ()
 printb (n:ns) = case n `quotRemInteger` mx of
-#ifdef INTEGER_GMP
+#if defined(INTEGER_GMP) || defined(INTEGER_SIMPLE)
   (# q', r' #) ->
 #else
   (q', r') ->
