@@ -5,6 +5,7 @@ license-file:      LICENSE
 author:            Dan Doel
 maintainer:        Dan Doel <dan.doel@gmail.com>
 homepage:          http://code.haskell.org/~dolio/
+source-repository: darcs get http://hub.darcs.net/bytestring-show
 category:          Text
 synopsis:          Efficient conversion of values into readable byte strings.
 description:       Efficient conversion of values into readable byte strings.
