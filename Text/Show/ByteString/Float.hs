@@ -46,7 +46,7 @@ putFormattedFloat fmt decs f
   | otherwise                 = go fmt (floatToDigits (toInteger base) f)
  where
  base = 10
- 
+
  go FFGeneric p@(_,e)
    | e < 0 || e > 7 = go FFExponent p
    | otherwise      = go FFFixed    p
@@ -86,6 +86,6 @@ putFormattedFloat fmt decs f
        let (ei, is') = roundTo base dec' (replicate (-e) 0 ++ is)
            d:ds      = if ei > 0 then is' else 0:is'
        in unsafePutDigit d >> when (not $ null ds) (putAscii '.' >> mapM_ unsafePutDigit ds)
- 
+
  mk0 [] = putAscii '0'
  mk0 rs = mapM_ unsafePutDigit rs

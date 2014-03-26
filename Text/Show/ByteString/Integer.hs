@@ -65,7 +65,7 @@ splith p (n:ns) = case n `quotRemInteger` p of
 #if defined(INTEGER_GMP) || defined(INTEGER_SIMPLE)
   (# q, r #) ->
 #else
-  (q, r) -> 
+  (q, r) ->
 #endif
           if q > 0
             then q : r : splitb p ns

@@ -65,8 +65,8 @@ showpInt64 = putI64
 -- Unboxed 64-bit-specific operations aren't exported
 
 putI64 :: Int64 -> Put
-putI64 i | i == minBound = putWord8 45 
-                           >> putW64 (fromIntegral $ negate (i `quot` 10)) 
+putI64 i | i == minBound = putWord8 45
+                           >> putW64 (fromIntegral $ negate (i `quot` 10))
                            >> putW64 (fromIntegral $ negate (i `rem` 10))
          | i < 0         = putWord8 45 >> putW64 (fromIntegral $ negate i)
          | otherwise     = putW64 (fromIntegral i)
@@ -92,7 +92,7 @@ showpWord64 = putW64
 
 putW64 :: Word64 -> Put
 putW64 w | w < 10    = unsafePutDigit64 w
-         | otherwise = putW64 (w `quot` 10) 
+         | otherwise = putW64 (w `quot` 10)
                        >> unsafePutDigit64 (w `rem` 10)
     where unsafePutDigit64 w = unsafePutDigit# (case fromIntegral w of (W# w#) -> w#)
 
