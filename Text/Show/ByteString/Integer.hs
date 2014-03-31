@@ -124,8 +124,8 @@ showpIntAtBase :: Integral a => a -> (Int -> Char) -> a -> Put
 showpIntAtBase b f n | n < 0     = putAscii '-' >> showpIntAtBase b f (-n)
                      | n == 0    = putAscii (f 0)
                      | otherwise = let
-  go n | n == 0    = return ()
+  go k | k == 0    = return ()
        | otherwise = go d >> putAscii (f $ fromIntegral m)
    where
-   (d, m) = n `divMod` b
+   (d, m) = k `divMod` b
   in go n

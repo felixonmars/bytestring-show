@@ -44,7 +44,7 @@ import Prelude hiding (Show(..), print, putStrLn)
 import qualified Prelude
 
 import Data.Binary.Put
-import Data.ByteString.Lazy
+import Data.ByteString.Lazy.Char8
 
 import Data.Int
 import Data.Word
