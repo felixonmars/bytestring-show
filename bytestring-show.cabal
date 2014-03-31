@@ -16,7 +16,7 @@ flag integer-simple
         description: use with integer-simple build of GHC
 
 library
-    build-depends: base < 5, binary < 0.8, bytestring >= 0.9 && <= 1, array < 0.5, containers < 0.6
+    build-depends: base < 5, binary < 0.8, bytestring >= 0.9 && <= 1, array < 0.6, containers < 0.6
 
     exposed-modules:
         Text.Show.ByteString
@@ -27,14 +27,6 @@ library
         Text.Show.ByteString.Int
         Text.Show.ByteString.Float
         Text.Show.ByteString.Integer
-
-    extensions:
-        UnboxedTuples,
-        MagicHash,
-        BangPatterns,
-        TypeSynonymInstances,
-        CPP,
-        FlexibleInstances
 
     ghc-options:
         -O2 -Wall

@@ -1,5 +1,6 @@
-{-# OPTIONS_GHC -funbox-strict-fields -cpp #-}
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE MagicHash #-}
+{-# LANGUAGE BangPatterns #-}
 
 -- ---------------------------------------------------------------------------
 -- |
@@ -27,22 +28,46 @@ import Text.Show.ByteString.Util
 
 putI :: Int# -> Put
 putI i#
-#if __GLASGOW_HASKELL__ && __GLASGOW_HASKELL__ >= 611
+#if __GLASGOW_HASKELL__ && __GLASGOW_HASKELL__ >= 708
+  = case i# <# 0# of
+      1#       -> let !(I# minInt#) = minInt
+#elif __GLASGOW_HASKELL__ && __GLASGOW_HASKELL__ >= 611
   | i# <# 0#  = let !(I# minInt#) = minInt
 #else
   | i# <# 0#  = let I# minInt# = minInt
 #endif
-                in if i# ==# minInt#
-                   then putWord8 45 >> putW (int2Word# (negateInt# (i# `quotInt#` 10#)))
+                in case i# ==# minInt# of
+#if __GLASGOW_HASKELL__ && __GLASGOW_HASKELL__ >= 708
+                     1# ->
+#else
+                     True ->
+#endif
+                        putWord8 45 >> putW (int2Word# (negateInt# (i# `quotInt#` 10#)))
                                     >> putW (int2Word# (negateInt# (i# `remInt#` 10#)))
-                   else putWord8 45 >> putW (int2Word# (negateInt# i#))
+                     _ ->
+                        putWord8 45 >> putW (int2Word# (negateInt# i#))
+#if __GLASGOW_HASKELL__ && __GLASGOW_HASKELL__ >= 708
+      _        -> putW (int2Word# i#)
+#else
   | otherwise = putW (int2Word# i#)
+#endif
 
 putW :: Word# -> Put
 putW w#
-  | w# `ltWord#` int2Word# 10# = unsafePutDigit# w#
-  | otherwise                  = putW (w# `quotWord#` int2Word# 10#)
-                              >> unsafePutDigit# (w# `remWord#` int2Word# 10#)
+#if __GLASGOW_HASKELL__ && __GLASGOW_HASKELL__ >= 708
+  = case w# `ltWord#` int2Word# 10# of
+      1# ->
+#else
+  | w# `ltWord#` int2Word# 10# =
+#endif
+        unsafePutDigit# w#
+#if __GLASGOW_HASKELL__ && __GLASGOW_HASKELL__ >= 708
+      _  ->
+#else
+  | otherwise =
+#endif
+        putW (w# `quotWord#` int2Word# 10#)
+        >> unsafePutDigit# (w# `remWord#` int2Word# 10#)
 
 showpInt :: Int -> Put
 showpInt (I# i#) = putI i#
