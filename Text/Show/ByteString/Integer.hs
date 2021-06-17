@@ -19,7 +19,7 @@ import GHC.Base
 #if   __GLASGOW_HASKELL__ && __GLASGOW_HASKELL__ <  611 && INTEGER_GMP
 import GHC.Integer.Internals
 #elif __GLASGOW_HASKELL__ && __GLASGOW_HASKELL__ >= 611 && INTEGER_GMP
-import GHC.Integer.GMP.Internals
+import GHC.Integer.GMP.Internals hiding (quotRemInteger)
 #elif __GLASGOW_HASKELL__ && INTEGER_SIMPLE
 import GHC.Integer.Simple.Internals
 #endif
